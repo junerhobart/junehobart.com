@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Cursor } from "@/components/cursor";
 import "./globals.css";
 
@@ -33,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}<Cursor /></body>
+      <body suppressHydrationWarning>{children}<Cursor /><Analytics /></body>
     </html>
   );
 }
