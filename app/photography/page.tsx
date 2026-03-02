@@ -3,7 +3,7 @@ import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import { PhotoGrid } from "@/components/photo-grid";
 
-export const revalidate = 3600;
+export const revalidate = 1800;
 
 type UnsplashPhoto = {
   id: string;
