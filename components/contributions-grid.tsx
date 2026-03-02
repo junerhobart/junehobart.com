@@ -67,23 +67,29 @@ export function ContributionsGrid({ contributions, total, compact }: Props) {
       </div>
 
       {weeks.length > 0 ? (
-        <div style={{ display: "flex", gap: "3px", overflowX: "auto", paddingBottom: "0.5rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${weeks.length}, 1fr)`,
+            gap: "clamp(1px, 0.4vw, 3px)",
+            width: "100%",
+          }}
+        >
           {weeks.map((week, wi) => (
-            <div key={wi} style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+            <div key={wi} style={{ display: "flex", flexDirection: "column", gap: "clamp(1px, 0.4vw, 3px)" }}>
               {week.map((day, di) => (
                 <motion.div
                   key={di}
                   initial={{ opacity: 0, scale: 0.3 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.2, delay: wi * 0.01 + di * 0.003, ease: "easeOut" }}
+                  transition={{ duration: 0.2, delay: wi * 0.008 + di * 0.002, ease: "easeOut" }}
                   title={`${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}`}
                   style={{
-                    width: 10,
-                    height: 10,
+                    aspectRatio: "1",
                     borderRadius: 2,
                     backgroundColor: LEVEL_COLORS[day.level],
-                    flexShrink: 0,
+                    width: "100%",
                   }}
                 />
               ))}
@@ -111,7 +117,7 @@ export function ContributionsGrid({ contributions, total, compact }: Props) {
       }}>
         <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", color: "rgba(240,240,240,0.2)" }}>Less</span>
         {[0, 1, 2, 3, 4].map((l) => (
-          <div key={l} style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: LEVEL_COLORS[l] }} />
+          <div key={l} style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: LEVEL_COLORS[l], flexShrink: 0 }} />
         ))}
         <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", color: "rgba(240,240,240,0.2)" }}>More</span>
       </div>

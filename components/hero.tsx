@@ -98,17 +98,6 @@ export function Hero() {
           >
             June Hobart
           </h1>
-          <p
-            style={{
-              fontFamily: "var(--font)",
-              fontSize: 21,
-              fontWeight: 600,
-              color: "#999",
-              margin: 0,
-            }}
-          >
-            Student developer
-          </p>
         </motion.div>
 
         <motion.p

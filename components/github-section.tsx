@@ -1,5 +1,5 @@
 import { ContributionsGrid } from "./contributions-grid";
-import { ProjectsGrid } from "./projects-grid";
+import { ProjectsList } from "./projects-list";
 
 type Contribution = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
@@ -37,7 +37,7 @@ async function fetchRepos(): Promise<Repo[]> {
     while (true) {
       const res = await fetch(
         `https://api.github.com/users/junerhobart/repos?sort=pushed&per_page=100&page=${page}`,
-        { next: { revalidate: 1800 } }
+        { next: { revalidate: 300 } }
       );
       const batch: Repo[] = await res.json();
       if (!Array.isArray(batch) || batch.length === 0) break;
@@ -61,9 +61,6 @@ export async function GithubSection() {
     <section
       id="projects"
       style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "flex-start",
         padding: "6rem 2rem",
         position: "relative",
         zIndex: 1,
@@ -71,32 +68,14 @@ export async function GithubSection() {
     >
       <div style={{ maxWidth: 800, margin: "0 auto", width: "100%" }}>
 
-        {/* Section heading */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "3.5rem",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font)",
-              fontSize: 38,
-              fontWeight: 500,
-              lineHeight: "46px",
-              color: "#fafafa",
-              margin: 0,
-            }}
-          >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3.5rem" }}>
+          <h2 style={{ fontFamily: "var(--font)", fontSize: 38, fontWeight: 500, color: "#fafafa", margin: 0 }}>
             Projects
           </h2>
           <div style={{ width: 56, height: 0, borderTop: "2px solid rgba(153,153,153,0.5)" }} />
         </div>
 
-        {/* Project cards */}
-        <ProjectsGrid repos={repos} />
+        <ProjectsList repos={repos} />
 
         <div
           style={{

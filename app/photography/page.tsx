@@ -1,15 +1,14 @@
-import Image from "next/image";
 import Link from "next/link";
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
+import { PhotoGrid } from "@/components/photo-grid";
 
 export const revalidate = 3600;
 
 type UnsplashPhoto = {
   id: string;
-  urls: { regular: string; small: string; full: string };
+  urls: { regular: string };
   alt_description: string | null;
-  description: string | null;
   width: number;
   height: number;
   links: { html: string };
@@ -40,27 +39,34 @@ export default async function Photography() {
       style={{
         minHeight: "100vh",
         backgroundColor: "var(--bg)",
-        padding: "4rem 2rem 6rem",
-        position: "relative",
-        zIndex: 1,
+        padding: "4rem 2rem 8rem",
       }}
     >
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto" }}>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "3rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "5rem",
+          }}
+        >
           <Link
             href="/"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.4rem",
+              gap: "0.35rem",
               fontFamily: "var(--font)",
-              fontSize: 13,
-              color: "#555",
+              fontSize: 12,
+              color: "#444",
               textDecoration: "none",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
             }}
           >
-            <ArrowBackRounded style={{ fontSize: 15 }} />
+            <ArrowBackRounded style={{ fontSize: 13 }} />
             Back
           </Link>
           <a
@@ -75,7 +81,7 @@ export default async function Photography() {
               fontSize: 12,
               color: "#444",
               textDecoration: "none",
-              letterSpacing: "0.08em",
+              letterSpacing: "0.06em",
               textTransform: "uppercase",
             }}
           >
@@ -84,59 +90,34 @@ export default async function Photography() {
           </a>
         </div>
 
-        <h1
-          style={{
-            fontFamily: "var(--font)",
-            fontSize: "clamp(2rem, 6vw, 3.5rem)",
-            fontWeight: 600,
-            color: "#fafafa",
-            margin: "0 0 0.5rem",
-            letterSpacing: "-0.03em",
-            lineHeight: 1.05,
-          }}
-        >
-          Photography
-        </h1>
-        <p style={{ fontFamily: "var(--font)", fontSize: 14, color: "#444", margin: "0 0 3.5rem" }}>
-          Madeira, Portugal &amp; beyond.
-        </p>
-
-        {photos.length === 0 ? (
-          <p style={{ fontFamily: "var(--font)", fontSize: 14, color: "#444" }}>No photos found.</p>
-        ) : (
-          <div
+        <div style={{ marginBottom: "4rem" }}>
+          <h1
             style={{
-              columns: "3 280px",
-              gap: 12,
+              fontFamily: "var(--font)",
+              fontSize: "clamp(2.4rem, 7vw, 4.5rem)",
+              fontWeight: 500,
+              color: "#fafafa",
+              margin: 0,
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
             }}
           >
-            {photos.map((photo) => (
-              <a
-                key={photo.id}
-                href={photo.links.html}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "block",
-                  marginBottom: 12,
-                  borderRadius: 8,
-                  overflow: "hidden",
-                  breakInside: "avoid",
-                  position: "relative",
-                }}
-              >
-                <Image
-                  src={photo.urls.regular}
-                  alt={photo.alt_description ?? "photo"}
-                  width={photo.width}
-                  height={photo.height}
-                  style={{ width: "100%", height: "auto", display: "block" }}
-                  sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
-                />
-              </a>
-            ))}
-          </div>
-        )}
+            Photography
+          </h1>
+          <p
+            style={{
+              fontFamily: "var(--font)",
+              fontSize: 13,
+              color: "#333",
+              margin: "1rem 0 0",
+              letterSpacing: "0.04em",
+            }}
+          >
+            {photos.length} photos
+          </p>
+        </div>
+
+        <PhotoGrid photos={photos} />
 
       </div>
     </main>
