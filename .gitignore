@@ -33,3 +33,4 @@ pnpm-debug.log*
 # local only
 .site-extract/
 *.site
+.vercel
