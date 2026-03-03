@@ -16,17 +16,27 @@ type UnsplashPhoto = {
 };
 
 async function fetchPhotos(): Promise<UnsplashPhoto[]> {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) {
+    console.error("[photography] UNSPLASH_ACCESS_KEY is not set");
+    return [];
+  }
   try {
     const res = await fetch(
       "https://api.unsplash.com/users/junehobart/photos?per_page=30&order_by=latest",
       {
-        headers: { Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` },
-        next: { revalidate: 3600 },
+        headers: { Authorization: `Client-ID ${key}` },
+        next: { revalidate: 1800 },
       }
     );
-    if (!res.ok) return [];
+    if (!res.ok) {
+      const body = await res.text();
+      console.error(`[photography] Unsplash API error ${res.status}:`, body);
+      return [];
+    }
     return res.json();
-  } catch {
+  } catch (e) {
+    console.error("[photography] fetch failed:", e);
     return [];
   }
 }
