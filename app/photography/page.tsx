@@ -2,6 +2,7 @@ import Link from "next/link";
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import { PhotoGrid } from "@/components/photo-grid";
+import { PhotographyTrailWrapper } from "@/components/photography-trail";
 
 export const revalidate = 1800;
 
@@ -44,7 +45,13 @@ async function fetchPhotos(): Promise<UnsplashPhoto[]> {
 export default async function Photography() {
   const photos = await fetchPhotos();
 
+  const trailPhotos = photos.slice(0, 12).map((p) => ({
+    src: p.urls.regular,
+    alt: p.alt_description ?? "photo",
+  }));
+
   return (
+    <PhotographyTrailWrapper photoUrls={trailPhotos}>
     <main
       style={{
         minHeight: "100vh",
