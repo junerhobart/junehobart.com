@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FloatingPaths } from "@/components/ui/background-paths";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const S = 0.72;
@@ -43,11 +42,6 @@ export function Hero() {
         animate={{ clipPath: "inset(0% 0% 100% 0% round 0 0 60% 60%)" }}
         transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
       />
-
-      <div style={{ position: "absolute", inset: 0, color: "#275180", opacity: 0.35, zIndex: 0 }}>
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
-      </div>
 
       <motion.div
         style={{
