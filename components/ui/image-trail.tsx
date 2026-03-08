@@ -15,9 +15,10 @@ import {
   useAnimate,
   useAnimationFrame,
 } from "framer-motion";
-import { v4 as uuidv4 } from "uuid";
-
 import { useMouseVector } from "@/components/hooks/use-mouse-vector";
+
+let _id = 0;
+const nextId = () => `trail-${++_id}`;
 
 type TrailSegment = [Target, Transition];
 type TrailAnimationSequence = TrailSegment[];
@@ -62,7 +63,7 @@ export function ImageTrail({
   const addToTrail = useCallback(
     (mousePos: { x: number; y: number }) => {
       const newItem: TrailItem = {
-        id: uuidv4(),
+        id: nextId(),
         x: mousePos.x,
         y: mousePos.y,
         rotation: (Math.random() - 0.5) * rotationRange * 2,

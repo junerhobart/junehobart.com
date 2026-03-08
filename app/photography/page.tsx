@@ -138,5 +138,6 @@ export default async function Photography() {
 
       </div>
     </main>
+    </PhotographyTrailWrapper>
   );
 }
