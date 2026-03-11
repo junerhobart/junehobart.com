@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { FloatingPaths } from "@/components/ui/background-paths";
+import { BackgroundPaths } from "./background-paths";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const S = 0.72;
@@ -31,51 +31,18 @@ export function Hero() {
         zIndex: 1,
       }}
     >
-
+      <BackgroundPaths />
       <motion.div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundColor: "#275180",
+          backgroundColor: "#1a1a1a",
           zIndex: 5,
         }}
         initial={{ clipPath: "inset(0% 0% 0% 0% round 0 0 0% 0%)" }}
         animate={{ clipPath: "inset(0% 0% 100% 0% round 0 0 60% 60%)" }}
         transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
       />
-
-      <div style={{ position: "absolute", inset: 0, color: "#275180", opacity: 0.35, zIndex: 0 }}>
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
-      </div>
-
-      <motion.div
-        style={{
-          position: "absolute",
-          bottom: "2.5rem",
-          left: "50%",
-          translateX: "-50%",
-          width: 3,
-          height: 72,
-          zIndex: 2,
-          overflow: "hidden",
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-      >
-        <motion.div
-          style={{ width: "100%", height: "100%", backgroundColor: "#275180" }}
-          animate={{ y: ["-100%", "0%", "0%", "100%"] }}
-          transition={{
-            duration: 2.2,
-            times: [0, 0.38, 0.62, 1],
-            repeat: Infinity,
-            repeatDelay: 1.0,
-            ease: [0.4, 0, 0.2, 1],
-          }}
-        />
-      </motion.div>
 
       <div
         style={{
@@ -115,7 +82,7 @@ export function Hero() {
             fontSize: 16,
             fontWeight: 400,
             lineHeight: 1.65,
-            color: "#555",
+            color: "#b0b0b0",
             maxWidth: 420,
             margin: "2rem 0 0",
             whiteSpace: "pre-line",

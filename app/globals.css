@@ -6,7 +6,7 @@
   --border: rgba(255, 255, 255, 0.07);
   --text: #fafafa;
   --muted: #999999;
-  --accent: #275180;
+  --accent: #e5e5e5;
   --font: var(--font-inter);
 }
 
@@ -29,6 +29,11 @@ body {
   font-family: var(--font), "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.blog-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 

@@ -10,10 +10,10 @@ type Contribution = {
 
 const LEVEL_COLORS: Record<number, string> = {
   0: "rgba(255,255,255,0.05)",
-  1: "#0d1a2b",
-  2: "#163350",
-  3: "#275180",
-  4: "#3d78bf",
+  1: "#1a1a1a",
+  2: "#333333",
+  3: "#525252",
+  4: "#737373",
 };
 
 interface Props {

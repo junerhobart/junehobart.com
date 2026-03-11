@@ -29,12 +29,21 @@ function UnsplashIcon({ style }: { style?: React.CSSProperties }) {
   );
 }
 
+function MediumIcon({ style }: { style?: React.CSSProperties }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" style={{ display: "block", ...style }}>
+      <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
+    </svg>
+  );
+}
+
 const socials = [
   { icon: <EmailRounded style={{ fontSize: 32 }} />, handle: "me@junehobart.com", href: "mailto:me@junehobart.com" },
   { icon: <GitHubIcon style={{ fontSize: 32 }} />, handle: "@junerhobart", href: "https://github.com/junerhobart", external: true },
   { icon: <DiscordIcon style={{ width: 32, height: 32 }} />, handle: "@junologist", href: "https://discord.gg/WQ628mcr4w", external: true },
   { icon: <XIcon style={{ width: 32, height: 32 }} />, handle: "@junerhobart", href: "https://x.com/junerhobart", external: true },
   { icon: <UnsplashIcon style={{ width: 32, height: 32 }} />, handle: "@junehobart", href: "https://unsplash.com/@junehobart", external: true },
+  { icon: <MediumIcon style={{ width: 32, height: 32 }} />, handle: "Medium", href: "https://medium.com/@junehobart", external: true },
   { icon: <PlaceRounded style={{ fontSize: 32 }} />, handle: "Madeira, PT", href: null },
 ];
 
@@ -48,8 +57,8 @@ const itemVariants = {
 
 const iconVariants = {
   rest:  { color: "#aaaaaa" },
-  hover: { color: "#275180" },
-  tap:   { color: "#1d3f63" },
+  hover: { color: "#f0f0f0" },
+  tap:   { color: "#cccccc" },
 };
 
 const labelVariants = {

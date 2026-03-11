@@ -11,11 +11,16 @@ type UnsplashPhoto = {
 };
 
 async function fetchPreviewPhotos(): Promise<UnsplashPhoto[]> {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) return [];
   try {
     const res = await fetch(
       "https://api.unsplash.com/users/junehobart/photos?per_page=8&order_by=latest",
       {
-        headers: { Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` },
+        headers: {
+          Authorization: `Client-ID ${key}`,
+          "Accept-Version": "v1",
+        },
         next: { revalidate: 3600 },
       }
     );

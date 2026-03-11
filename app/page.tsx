@@ -2,6 +2,7 @@ import { Hero } from "@/components/hero";
 import { Skills } from "@/components/skills";
 import { GithubSection } from "@/components/github-section";
 import { PhotographyPreview } from "@/components/photography-preview";
+import { BlogPreview } from "@/components/blog-preview";
 import { Contact } from "@/components/contact";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <Skills />
       <GithubSection />
       <PhotographyPreview />
+      <BlogPreview />
       <Contact />
     </main>
   );

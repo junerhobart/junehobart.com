@@ -74,11 +74,11 @@ export function Skills() {
               />
               <Radar
                 dataKey="value"
-                stroke="#275180"
+                stroke="var(--accent)"
                 strokeWidth={1.5}
-                fill="#275180"
-                fillOpacity={0.18}
-                dot={{ fill: "#275180", r: 3.5, strokeWidth: 0 }}
+                fill="var(--accent)"
+                fillOpacity={0.2}
+                dot={{ fill: "var(--accent)", r: 3.5, strokeWidth: 0 }}
               />
             </RadarChart>
           </ResponsiveContainer>
@@ -111,7 +111,7 @@ export function Skills() {
                     whileInView={{ width: `${pct}%` }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.1, delay: 0.1 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ height: "100%", backgroundColor: "#275180", borderRadius: 999 }}
+                    style={{ height: "100%", backgroundColor: "var(--accent)", borderRadius: 999 }}
                   />
                 </div>
               </div>

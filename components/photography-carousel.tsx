@@ -50,18 +50,24 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
     const el = trackRef.current;
     if (!el) return;
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    const start = el.scrollLeft;
-    const target = start + distance;
+    const state = { start: el.scrollLeft, target: el.scrollLeft + distance };
     const startTime = performance.now();
     const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
     const step = (now: number) => {
       const elapsed = Math.min((now - startTime) / duration, 1);
-      el.scrollLeft = start + (target - start) * ease(elapsed);
+      el.scrollLeft = state.start + (state.target - state.start) * ease(elapsed);
 
       const s = el.scrollLeft;
-      if (s < stride * 0.5)       el.scrollLeft += stride;
-      else if (s >= stride * 2.5) el.scrollLeft -= stride;
+      if (s < stride * 0.5) {
+        el.scrollLeft += stride;
+        state.start += stride;
+        state.target += stride;
+      } else if (s >= stride * 2.5) {
+        el.scrollLeft -= stride;
+        state.start -= stride;
+        state.target -= stride;
+      }
 
       if (elapsed < 1) {
         rafRef.current = requestAnimationFrame(step);
