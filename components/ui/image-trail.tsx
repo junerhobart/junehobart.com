@@ -25,7 +25,7 @@ type TrailAnimationSequence = TrailSegment[];
 
 interface ImageTrailProps {
   children: React.ReactNode;
-  containerRef?: React.RefObject<HTMLElement>;
+  containerRef?: React.RefObject<HTMLElement | null>;
   newOnTop?: boolean;
   rotationRange?: number;
   animationSequence?: TrailAnimationSequence;
