@@ -1,3 +1,4 @@
+import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { ContributionsGrid } from "./contributions-grid";
 import { ProjectsList } from "./projects-list";
 
@@ -70,9 +71,27 @@ export async function GithubSection() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3.5rem" }}>
           <h2 style={{ fontFamily: "var(--font)", fontSize: 38, fontWeight: 500, color: "#fafafa", margin: 0 }}>
-            Projects
+            Repositories
           </h2>
-          <div style={{ width: 56, height: 0, borderTop: "2px solid rgba(153,153,153,0.5)" }} />
+          <a
+            href="https://github.com/junerhobart"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.25rem",
+              fontFamily: "var(--font)",
+              fontSize: 12,
+              color: "#555",
+              textDecoration: "none",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
+            View all
+            <ArrowForwardRounded style={{ fontSize: 13 }} />
+          </a>
         </div>
 
         <ProjectsList repos={repos} />
@@ -81,7 +100,6 @@ export async function GithubSection() {
           style={{
             marginTop: "5rem",
             paddingTop: "3rem",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
           }}
         >
           <ContributionsGrid contributions={contributions} total={total} compact />

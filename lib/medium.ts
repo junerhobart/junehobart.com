@@ -36,15 +36,20 @@ function formatDate(isoOrRfc: string): string {
   });
 }
 
-export async function fetchMediumPosts(username: string): Promise<MediumPost[]> {
+const isDev = process.env.NODE_ENV !== "production";
+
+export async function fetchMediumPosts(username: string, limit = 10): Promise<MediumPost[]> {
   const feedUrl = `https://medium.com/feed/@${username.replace(/^@/, "")}`;
   try {
     const res = await fetch(feedUrl, { next: { revalidate: 3600 } });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      if (isDev) console.error("[blog] Medium feed fetch failed:", res.status, res.statusText);
+      return [];
+    }
     const xml = await res.text();
     const feed = await parser.parseString(xml);
     const items = feed.items ?? [];
-    return items.slice(0, 10).map((item) => {
+    const posts = items.slice(0, limit).map((item) => {
       const content =
         (item as { contentEncoded?: string }).contentEncoded ?? item.content ?? item.contentSnippet ?? "";
       const plain = stripHtml(content);
@@ -58,7 +63,9 @@ export async function fetchMediumPosts(username: string): Promise<MediumPost[]> 
         image: image ?? null,
       };
     });
-  } catch {
+    return posts.filter((p) => p.link);
+  } catch (err) {
+    if (isDev) console.error("[blog] Medium feed error:", err);
     return [];
   }
 }

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
-import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import { fetchMediumPosts, formatDate, type MediumPost } from "@/lib/medium";
 
 const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME ?? "junehobart";
@@ -42,8 +41,8 @@ export async function BlogPreview() {
               textTransform: "uppercase",
             }}
           >
-            View all on Medium
-            <ArrowOutwardRounded style={{ fontSize: 13 }} />
+            View all
+            <ArrowForwardRounded style={{ fontSize: 13 }} />
           </a>
         </div>
 
@@ -80,12 +79,10 @@ function BlogCard({ post }: { post: MediumPost }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 12,
         overflow: "hidden",
         textDecoration: "none",
         color: "inherit",
-        transition: "border-color 0.2s, background-color 0.2s",
+        transition: "opacity 0.2s",
       }}
     >
       <div

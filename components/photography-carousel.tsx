@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 type UnsplashPhoto = {
   id: string;
@@ -102,9 +101,11 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
         }}
       >
         {looped.map((photo, i) => (
-          <Link
+          <a
             key={`${photo.id}-${i}`}
-            href="/photography"
+            href="https://unsplash.com/@junehobart"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               flexShrink: 0,
               width: loopedWidths[i],
@@ -122,7 +123,7 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
               style={{ objectFit: "cover" }}
               sizes="340px"
             />
-          </Link>
+          </a>
         ))}
       </div>
     </div>

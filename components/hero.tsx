@@ -92,17 +92,6 @@ export function Hero() {
         </motion.p>
 
       </div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          backgroundColor: "rgba(255,255,255,0.08)",
-          zIndex: 2,
-        }}
-      />
     </section>
   );
 }
