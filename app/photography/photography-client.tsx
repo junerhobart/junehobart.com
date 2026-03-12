@@ -1,19 +1,21 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
 import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import { CircularGallery } from "@/components/circular-gallery";
 import type { GalleryPhoto } from "@/lib/photography";
 
-const SCROLL_RANGE_VH = 500;
-/** More = slower: scroll this many viewport heights for one full lap of the gallery. */
+/** One full lap of the gallery = this many viewport heights of scroll. */
 const SCROLL_SENSITIVITY = 2;
+/** Three laps: middle is "live", top/bottom are buffers we jump across for infinite loop. */
+const LAPS = 3;
 
 export function PhotographyClient({ photos }: { photos: GalleryPhoto[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const scrollProgressRef = useRef(0);
+  const lastScrollTopRef = useRef<number | null>(null);
 
   const getScrollProgress = useCallback(() => scrollProgressRef.current, []);
 
@@ -23,7 +25,37 @@ export function PhotographyClient({ photos }: { photos: GalleryPhoto[] }) {
     const { scrollTop, clientHeight } = el;
     const lapHeight = clientHeight * SCROLL_SENSITIVITY;
     if (lapHeight <= 0) return;
-    scrollProgressRef.current = (scrollTop / lapHeight) % 1;
+
+    const progress = (scrollTop / lapHeight) % 1;
+    scrollProgressRef.current = progress;
+
+    const last = lastScrollTopRef.current;
+    lastScrollTopRef.current = scrollTop;
+
+    if (last === null) return;
+
+    const crossedIntoTopLap = scrollTop < lapHeight && last >= lapHeight;
+    const crossedIntoBottomLap = scrollTop > 2 * lapHeight && last <= 2 * lapHeight;
+
+    if (crossedIntoTopLap) {
+      const newTop = scrollTop + 2 * lapHeight;
+      lastScrollTopRef.current = newTop;
+      el.scrollTo({ top: newTop, behavior: "auto" });
+    } else if (crossedIntoBottomLap) {
+      const newTop = scrollTop - 2 * lapHeight;
+      lastScrollTopRef.current = newTop;
+      el.scrollTo({ top: newTop, behavior: "auto" });
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const clientHeight = el.clientHeight;
+    const lapHeight = clientHeight * SCROLL_SENSITIVITY;
+    const middle = lapHeight;
+    lastScrollTopRef.current = middle;
+    el.scrollTo({ top: middle, behavior: "auto" });
   }, []);
 
   if (photos.length === 0) {
@@ -45,7 +77,12 @@ export function PhotographyClient({ photos }: { photos: GalleryPhoto[] }) {
           backgroundSize: "28px 28px",
         }}
       >
-        <div style={{ height: `${SCROLL_RANGE_VH}vh` }} aria-hidden />
+        <div
+          style={{
+            height: `${LAPS * SCROLL_SENSITIVITY * 100}vh`,
+          }}
+          aria-hidden
+        />
       </div>
 
       <div className="pointer-events-none fixed inset-0 flex flex-col">
