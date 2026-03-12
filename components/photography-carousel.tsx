@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 type UnsplashPhoto = {
   id: string;
@@ -50,18 +49,24 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
     const el = trackRef.current;
     if (!el) return;
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    const start = el.scrollLeft;
-    const target = start + distance;
+    const state = { start: el.scrollLeft, target: el.scrollLeft + distance };
     const startTime = performance.now();
     const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
     const step = (now: number) => {
       const elapsed = Math.min((now - startTime) / duration, 1);
-      el.scrollLeft = start + (target - start) * ease(elapsed);
+      el.scrollLeft = state.start + (state.target - state.start) * ease(elapsed);
 
       const s = el.scrollLeft;
-      if (s < stride * 0.5)       el.scrollLeft += stride;
-      else if (s >= stride * 2.5) el.scrollLeft -= stride;
+      if (s < stride * 0.5) {
+        el.scrollLeft += stride;
+        state.start += stride;
+        state.target += stride;
+      } else if (s >= stride * 2.5) {
+        el.scrollLeft -= stride;
+        state.start -= stride;
+        state.target -= stride;
+      }
 
       if (elapsed < 1) {
         rafRef.current = requestAnimationFrame(step);
@@ -96,9 +101,11 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
         }}
       >
         {looped.map((photo, i) => (
-          <Link
+          <a
             key={`${photo.id}-${i}`}
-            href="/photography"
+            href="https://unsplash.com/@junehobart"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               flexShrink: 0,
               width: loopedWidths[i],
@@ -116,7 +123,7 @@ export function PhotographyCarousel({ photos }: { photos: UnsplashPhoto[] }) {
               style={{ objectFit: "cover" }}
               sizes="340px"
             />
-          </Link>
+          </a>
         ))}
       </div>
     </div>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { PhotographyCarousel } from "./photography-carousel";
 
@@ -10,18 +9,32 @@ type UnsplashPhoto = {
   height: number;
 };
 
+const isDev = process.env.NODE_ENV !== "production";
+
 async function fetchPreviewPhotos(): Promise<UnsplashPhoto[]> {
+  const key = process.env.UNSPLASH_ACCESS_KEY;
+  if (!key) {
+    if (isDev) console.error("[photography-preview] UNSPLASH_ACCESS_KEY is not set");
+    return [];
+  }
   try {
     const res = await fetch(
       "https://api.unsplash.com/users/junehobart/photos?per_page=8&order_by=latest",
       {
-        headers: { Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` },
+        headers: {
+          Authorization: `Client-ID ${key}`,
+          "Accept-Version": "v1",
+        },
         next: { revalidate: 3600 },
       }
     );
-    if (!res.ok) return [];
+    if (!res.ok) {
+      if (isDev) console.error("[photography-preview] Unsplash API error:", res.status, res.statusText);
+      return [];
+    }
     return res.json();
-  } catch {
+  } catch (err) {
+    if (isDev) console.error("[photography-preview] Unsplash fetch error:", err);
     return [];
   }
 }
@@ -47,8 +60,10 @@ export async function PhotographyPreview() {
           >
             Photography
           </h2>
-          <Link
-            href="/photography"
+          <a
+            href="https://unsplash.com/@junehobart"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -63,7 +78,7 @@ export async function PhotographyPreview() {
           >
             View all
             <ArrowForwardRounded style={{ fontSize: 13 }} />
-          </Link>
+          </a>
         </div>
 
         <PhotographyCarousel photos={photos} />

@@ -8,12 +8,13 @@ type Contribution = {
   level: 0 | 1 | 2 | 3 | 4;
 };
 
+// Level 0 = site gray (no contributions); 1–4 = GitHub greens
 const LEVEL_COLORS: Record<number, string> = {
-  0: "rgba(255,255,255,0.05)",
-  1: "#0d1a2b",
-  2: "#163350",
-  3: "#275180",
-  4: "#3d78bf",
+  0: "#1a1a1a", // no contributions (matches --surface)
+  1: "#0e4429",
+  2: "#006d32",
+  3: "#26a641",
+  4: "#39d353",
 };
 
 interface Props {

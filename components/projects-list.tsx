@@ -44,7 +44,6 @@ export function ProjectsList({ repos }: { repos: Repo[] }) {
             justifyContent: "space-between",
             gap: "1.5rem",
             padding: "1.1rem 0",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
             textDecoration: "none",
             transition: "border-color 150ms",
           }}

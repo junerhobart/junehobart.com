@@ -6,6 +6,35 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 const INTERACTIVE_TAGS = new Set(["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "LABEL"]);
 const TEXT_TAGS = new Set(["P", "H1", "H2", "H3", "H4", "H5", "H6", "SPAN", "LI", "STRONG", "EM", "BLOCKQUOTE"]);
 
+const FALLBACK_BG = "rgb(18, 18, 18)";
+
+function parseRgb(rgb: string): [number, number, number] | null {
+  const m = rgb.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+  if (m) return [Number(m[1]), Number(m[2]), Number(m[3])];
+  const hex = rgb.match(/#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b/);
+  if (hex) {
+    let h = hex[1];
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+  return null;
+}
+
+function sampleBgAt(x: number, y: number): string {
+  const el = document.elementFromPoint(x, y) as HTMLElement | null;
+  let node: HTMLElement | null = el;
+  while (node && node !== document.body) {
+    const bg = getComputedStyle(node).backgroundColor;
+    const rgb = parseRgb(bg);
+    if (rgb && (bg.startsWith("rgba") ? parseFloat(bg.split(",").pop() ?? "0") > 0.01 : true))
+      return `rgb(${255 - rgb[0]},${255 - rgb[1]},${255 - rgb[2]})`;
+    node = node.parentElement;
+  }
+  const root = parseRgb(getComputedStyle(document.documentElement).backgroundColor || FALLBACK_BG);
+  if (root) return `rgb(${255 - root[0]},${255 - root[1]},${255 - root[2]})`;
+  return "rgb(237, 237, 237)";
+}
+
 type CursorState = "default" | "hover" | "text" | "down";
 
 function getStateFor(el: HTMLElement, isDown: boolean): CursorState {
@@ -15,11 +44,11 @@ function getStateFor(el: HTMLElement, isDown: boolean): CursorState {
   return "default";
 }
 
-const STATES: Record<CursorState, { width: number; height: number; borderRadius: number; border: string; bg: string }> = {
-  default: { width: 28, height: 28, borderRadius: 999, border: "none",                  bg: "#275180"      },
-  hover:   { width: 40, height: 40, borderRadius: 999, border: "2.5px solid #275180",   bg: "transparent"  },
-  text:    { width: 3,  height: 32, borderRadius: 999, border: "none",                  bg: "#275180"      },
-  down:    { width: 16, height: 16, borderRadius: 999, border: "none",                  bg: "#275180"      },
+const STATES: Record<CursorState, { width: number; height: number; borderRadius: number }> = {
+  default: { width: 28, height: 28, borderRadius: 999 },
+  hover:   { width: 40, height: 40, borderRadius: 999 },
+  text:    { width: 3,  height: 32, borderRadius: 999 },
+  down:    { width: 16, height: 16, borderRadius: 999 },
 };
 
 const MAX_STRETCH = 1.7;
@@ -27,9 +56,10 @@ const SPEED_CAP   = 28;
 
 export function Cursor() {
   const [hasPointer, setHasPointer] = useState(false);
-  const [state, setState]     = useState<CursorState>("default");
+  const [state, setState] = useState<CursorState>("default");
   const [visible, setVisible] = useState(false);
-  const [isDown, setIsDown]   = useState(false);
+  const [isDown, setIsDown] = useState(false);
+  const [inverseColor, setInverseColor] = useState("rgb(237, 237, 237)");
 
   useEffect(() => {
     setHasPointer(window.matchMedia("(pointer: fine)").matches);
@@ -114,6 +144,7 @@ export function Cursor() {
 
       rawX.set(e.clientX);
       rawY.set(e.clientY);
+      setInverseColor(sampleBgAt(e.clientX, e.clientY));
 
       if (!loop.visible) { loop.visible = true; setVisible(true); }
 
@@ -157,6 +188,7 @@ export function Cursor() {
   if (!hasPointer) return null;
 
   const s = STATES[state];
+  const isHover = state === "hover";
 
   return (
     <motion.div
@@ -178,8 +210,8 @@ export function Cursor() {
             width:           s.width,
             height:          s.height,
             borderRadius:    s.borderRadius,
-            backgroundColor: s.bg,
-            border:          s.border,
+            backgroundColor: isHover ? "transparent" : inverseColor,
+            border:          isHover ? `2.5px solid ${inverseColor}` : "none",
             opacity:         visible ? 1 : 0,
           }}
           transition={
